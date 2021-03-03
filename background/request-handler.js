@@ -1,20 +1,26 @@
 // Initialize the list of blocked hosts
 let blockedHosts = ["https://feedbin.com/", "https://www.feedbin.com/"];
 let minimumUnreadEntries = 250;
-let user = "";
-let password = "";
+let username = null;
+let password = null;
 
 // Set the default list on installation.
-browser.runtime.onInstalled.addListener((details) => {
+browser.runtime.onInstalled.addListener(() => {
     browser.storage.local.set({
         minimumUnreadEntries,
     });
 });
 
-// Get the stored list
+// Get the stored settings
 browser.storage.local.get((data) => {
     if (data.minimumUnreadEntries) {
         minimumUnreadEntries = data.minimumUnreadEntries;
+    }
+    if (data.username) {
+        username = data.username;
+    }
+    if (data.password) {
+        password = data.password;
     }
 });
 
@@ -41,15 +47,22 @@ function getNumberOfUnreadEntries(login, password) {
 
 function logURL(requestDetails) {
     if (blockedHosts.includes(requestDetails.url)) {
-        console.log("url", requestDetails.url);
-        return getNumberOfUnreadEntries(username, password).then((current) => {
-            if (current < minimumUnreadEntries) {
-              console.log(`Only ${current} unread entries, blocking`)
-              return {
-                redirectUrl: "https://duckduckgo.com"
-              }
-            }
-        });
+        if (username && password) {
+            return getNumberOfUnreadEntries(username, password).then((current) => {
+                if (current < minimumUnreadEntries) {
+                    console.log(`Only ${current} unread entries, blocking`);
+                    return {
+                        redirectUrl: "https://duckduckgo.com",
+                    };
+                }
+            });
+        } else {
+            browser.notifications.create({
+                type: "basic",
+                title: "Feedbin Blocker",
+                message: "You need to add your Feedbin credentials in the options, in order to block Feedbin.",
+            });
+        }
     }
 }
 

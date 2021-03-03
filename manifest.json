@@ -27,6 +27,6 @@
     "browser_style": true
   },
 
-  "permissions": ["webRequest", "webRequestBlocking", "storage", "<all_urls>"]
+  "permissions": ["webRequest", "webRequestBlocking", "storage", "notifications", "<all_urls>"]
 
 }
