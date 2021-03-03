@@ -2,7 +2,7 @@
 
   "manifest_version": 2,
   "name": "feedbin-blocker",
-  "description": "Uses the proxy API to block Feedbin unless there is more than a set amount of unread entries.",
+  "description": "Block access to Feedbin unless there is more than a set amount of unread entries.",
   "version": "1.0",
 
   "icons": {
@@ -18,7 +18,7 @@
 
   "background": {
     "scripts": [
-      "background/proxy-handler.js"
+      "background/request-handler.js"
     ]
   },
 
@@ -27,6 +27,6 @@
     "browser_style": true
   },
 
-  "permissions": ["proxy", "storage", "<all_urls>"]
+  "permissions": ["webRequest", "webRequestBlocking", "storage", "<all_urls>"]
 
 }
