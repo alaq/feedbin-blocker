@@ -50,10 +50,9 @@ function logURL(requestDetails) {
         if (username && password) {
             return getNumberOfUnreadEntries(username, password).then((current) => {
                 if (current < minimumUnreadEntries) {
-                    console.log(`Only ${current} unread entries, blocking`);
-                    return {
-                        redirectUrl: "https://duckduckgo.com",
-                    };
+                    browser.tabs.update(requestDetails.tabId, {
+                        url: "/splash/index.html",
+                    });
                 }
             });
         } else {
