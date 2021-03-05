@@ -1,5 +1,4 @@
 {
-
   "manifest_version": 2,
   "name": "feedbin-blocker",
   "description": "Block access to Feedbin unless there is more than a set amount of unread entries.",
@@ -27,6 +26,5 @@
     "browser_style": true
   },
 
-  "permissions": ["webRequest", "webRequestBlocking", "storage", "notifications", "<all_urls>"]
-
+  "permissions": ["webRequest", "webRequestBlocking", "storage", "notifications", "*://feedbin.com/*", "*://www.feedbin.com/*", "https://api.feedbin.com/*"]
 }

@@ -65,4 +65,4 @@ function logURL(requestDetails) {
     }
 }
 
-browser.webRequest.onBeforeRequest.addListener(logURL, { urls: ["<all_urls>"] }, ["blocking"]);
+browser.webRequest.onBeforeRequest.addListener(logURL, { urls: ["*://feedbin.com/*", "*://www.feedbin.com/*"] }, ["blocking"]);
