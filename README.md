@@ -2,8 +2,15 @@
 
 ## What it does
 
-This Firefox extension uses the proxy API listener `onRequest` to listen for requests to visits to feedbin.com, and blocks it if there is less than a set number of unread entries. This prevents me from going to Feedbin repeateadly while doing other things. Only to find <10 unread entries. The number of entries can be changed through the extension's option page.
+This Firefox extension API listener `onBeforeRequest` to listen for requests to feedbin.com, and blocks it if there is less than a set number of unread entries. This prevents me from going to Feedbin repeateadly while doing other things. Only to find <10 unread entries. The default number of entries is 250 and can be changed through the extension's option page.
 
-To try out this extension:
-* install it
-* visit `feedbin.com` and see it is blocked
+## Install from the Firefox Store
+* Coming soon
+
+## Install from source
+* Clone or download this repository
+* Go to about:debugging
+* Click on `This Firefox`
+* Click on `Load Temporary Add-on...`
+* Load the extension's preferences and input your login and password
+* Try to visit `feedbin.com` 
