@@ -5,14 +5,14 @@ let username = null;
 let password = null;
 
 // Set the default list on installation.
-browser.runtime.onInstalled.addListener(() => {
-    browser.storage.local.set({
+chrome.runtime.onInstalled.addListener(() => {
+    chrome.storage.local.set({
         minimumUnreadEntries,
     });
 });
 
 // Get the stored settings
-browser.storage.local.get((data) => {
+chrome.storage.local.get((data) => {
     if (data.minimumUnreadEntries) {
         minimumUnreadEntries = data.minimumUnreadEntries;
     }
@@ -25,8 +25,10 @@ browser.storage.local.get((data) => {
 });
 
 // Listen for changes in the number of entries
-browser.storage.onChanged.addListener((changeData) => {
-    minimumUnreadEntries = changeData.minimumUnreadEntries.newValue;
+chrome.storage.onChanged.addListener((changeData) => {
+    if (changeData?.minimumUnreadEntries?.newValue) {
+        minimumUnreadEntries = changeData.minimumUnreadEntries.newValue;
+    }
 });
 
 function getNumberOfUnreadEntries(login, password) {
@@ -50,14 +52,15 @@ function logURL(requestDetails) {
         if (username && password) {
             return getNumberOfUnreadEntries(username, password).then((current) => {
                 if (current < minimumUnreadEntries) {
-                    browser.tabs.update(requestDetails.tabId, {
+                    chrome.tabs.update(requestDetails.tabId, {
                         url: "/splash/index.html",
                     });
                 }
             });
         } else {
-            browser.notifications.create({
+            chrome.notifications.create({
                 type: "basic",
+                iconUrl: "../icons/block.svg",
                 title: "Feedbin Blocker",
                 message: "You need to add your Feedbin credentials in the options, in order to block Feedbin.",
             });
@@ -65,4 +68,6 @@ function logURL(requestDetails) {
     }
 }
 
-browser.webRequest.onBeforeRequest.addListener(logURL, { urls: ["*://feedbin.com/*", "*://www.feedbin.com/*"] }, ["blocking"]);
+chrome.webRequest.onBeforeRequest.addListener(logURL, { urls: ["*://feedbin.com/*", "*://www.feedbin.com/*"] }, [
+    "blocking",
+]);
